@@ -81,6 +81,7 @@ jobs:
 
       - name: Install Tor Browser
         run: |
+          Write-Host "=== TOR BROWSER INSTALLATION ==="
           $torFiles = @(
               "$env:TEMP\tor-browser-windows-x86_64-portable-14.5.6.exe",
               "D:\Script\tor-browser-windows-x86_64-portable-14.5.6.exe"
@@ -90,7 +91,7 @@ jobs:
           foreach ($torFile in $torFiles) {
               if (Test-Path $torFile) {
                   Write-Host "Installing Tor Browser from: $torFile"
-                  Start-Process -FilePath $torFile -ArgumentList "/S", "/D=C:\Tor Browser" -Wait
+                  Start-Process -FilePath $torFile -ArgumentList "/S /D=C:\Tor Browser" -Wait -NoNewWindow
                   Write-Host "Tor Browser installed successfully"
                   $torInstalled = $true
                   break
@@ -101,10 +102,11 @@ jobs:
               Write-Host "Tor Browser file not found in downloads, using official source..."
               $torUrl = "https://dist.torproject.org/torbrowser/14.0.3/tor-browser-windows-x86_64-portable-14.0.3.exe"
               $torPath = "$env:TEMP\tor-installer.exe"
-              Invoke-WebRequest -Uri $torUrl -OutFile $torPath
-              Start-Process -FilePath $torPath -ArgumentList "/S", "/D=C:\Tor Browser" -Wait
+              Invoke-WebRequest -Uri $torUrl -OutFile $torPath -UseBasicParsing
+              Start-Process -FilePath $torPath -ArgumentList "/S /D=C:\Tor Browser" -Wait -NoNewWindow
               Write-Host "Tor Browser downloaded and installed from official source"
           }
+          Write-Host "Tor Browser installation completed"
 
       - name: Install Python Dependencies
         run: |
