@@ -157,6 +157,24 @@ jobs:
               $batchContent | Out-File -FilePath $batchPath -Encoding ASCII
               Write-Host "Created launcher: $batchName.bat"
           }
+
+      - name: Create RDP Control Panel
+        run: |
+          Write-Host "=== CREATING RDP CONTROL PANEL ==="
+          
+          $desktopPath = "C:\Users\TOOLBOXLAP\Desktop"
+          
+          # CrÃ©er des fichiers BAT simples pour lancer les scripts Python
+          $bat1Content = "@echo off`ncd /d D:\Script`nstart `"Residential GUI`" cmd /k python.exe usa_residential_gui.py"
+          $bat1Content | Out-File -FilePath "$desktopPath\Launch-Residential.bat" -Encoding ASCII
+          
+          $bat2Content = "@echo off`ncd /d D:\Script`nstart `"Trustworthy`" cmd /k python.exe FINAL_3_WINDOWS_TRUSTWORTHY-Parfait.py"
+          $bat2Content | Out-File -FilePath "$desktopPath\Launch-Trustworthy.bat" -Encoding ASCII
+          
+          $batAllContent = "@echo off`ncd /d D:\Script`necho Launching Python scripts...`nstart `"Residential GUI`" cmd /k python.exe usa_residential_gui.py`ntimeout /t 2 /nobreak >nul`nstart `"Trustworthy`" cmd /k python.exe FINAL_3_WINDOWS_TRUSTWORTHY-Parfait.py`necho Scripts launched!"
+          $batAllContent | Out-File -FilePath "$desktopPath\Launch-ALL-Scripts.bat" -Encoding ASCII
+          
+          Write-Host "Desktop launchers created successfully"
           
           $torBatchContent = "@echo off`ncd /d `"C:\Tor Browser\Browser`"`nstart firefox.exe"
           $torBatchContent | Out-File -FilePath "$desktopPath\Tor Browser.bat" -Encoding ASCII
